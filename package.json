@@ -1,19 +1,27 @@
 {
-  "name": "cse340-course",
+  "name": "cse340-hw",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://github.com/loisemusungu/cse340-course",
+  "bugs": {
+    "url": "https://github.com/loisemusungu/cse340-course"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loisemusungu/cse340-course"
+  },
+  "license": "ISC",
+  "author": "Loise Musungu",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "Loise Musungu",
-  "license": "ISC",
   "dependencies": {
     "express": "^5.2.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.11"
   }
 }
