@@ -1,4 +1,3 @@
-
 -- ========================================
 -- Organization Table
 -- ========================================
@@ -19,8 +18,7 @@ VALUES
 ('GreenHarvest Growers', 'An urban farming collective promoting food sustainability and education in local neighborhoods.', 'contact@greenharvest.org', 'greenharvest-logo.png'),
 ('UnityServe Volunteers', 'A volunteer coordination group supporting local charities and service initiatives.', 'hello@unityserve.org', 'unityserve-logo.png');
 
-
-SELECT * FROM organization
+SELECT * FROM organization;
 
 -- ========================================
 -- Category Table
@@ -29,6 +27,15 @@ CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL UNIQUE
 );
+
+-- ========================================
+-- Insert sample data: Categories
+-- ========================================
+INSERT INTO category (name) VALUES
+('Clean Up'),
+('Food Drive'),
+('Mentoring');
+
 -- ========================================
 -- Service Project Table
 -- ========================================
@@ -37,6 +44,7 @@ CREATE TABLE service_project (
     organization_id INT NOT NULL,
     title VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
+    location VARCHAR(200) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     FOREIGN KEY (organization_id)
@@ -44,12 +52,18 @@ CREATE TABLE service_project (
         ON DELETE CASCADE
 );
 
-INSERT INTO service_project (organization_id, title, description, start_date, end_date)
+-- ========================================
+-- Insert sample data: Service Projects
+-- ========================================
+INSERT INTO service_project (organization_id, title, description, location, start_date, end_date)
 VALUES
-(1, 'Community Park Cleanup', 'Volunteers will clean and refresh the neighborhood park.', '2025-05-10', '2025-05-10'),
-(2, 'Urban Garden Build Day', 'Help expand the community garden and plant new crops.', '2025-06-02', '2025-06-02'),
-(3, 'Youth Mentoring Workshop', 'Mentor youth and guide them in leadership activities.', '2025-05-20', '2025-05-20');
+(1, 'Community Park Cleanup', 'Volunteers will clean and refresh the neighborhood park.', 'Central City Park', '2025-05-10', '2025-05-10'),
+(2, 'Urban Garden Build Day', 'Help expand the community garden and plant new crops.', 'Downtown Community Garden', '2025-06-02', '2025-06-02'),
+(3, 'Youth Mentoring Workshop', 'Mentor youth and guide them in leadership activities.', 'City Youth Center', '2025-05-20', '2025-05-20');
 
+-- ========================================
+-- Project Category Junction Table
+-- ========================================
 CREATE TABLE project_category (
     project_id INT NOT NULL,
     category_id INT NOT NULL,
@@ -62,33 +76,18 @@ CREATE TABLE project_category (
         ON DELETE CASCADE
 );
 
-INSERT INTO category (name) VALUES
-('Clean Up'),
-('Food Drive'),
-('Mentoring');
-
+-- ========================================
+-- Insert sample data: Project Categories
+-- ========================================
 INSERT INTO project_category (project_id, category_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
 
-ALTER TABLE service_project
-ADD COLUMN location VARCHAR(200);
-
-UPDATE service_project
-SET location = 'Central City Park'
-WHERE project_id = 1;
-
-UPDATE service_project
-SET location = 'Downtown Community Garden'
-WHERE project_id = 2;
-
-UPDATE service_project
-SET location = 'City Youth Center'
-WHERE project_id = 3;
-
-SELECT * FROM service_project;
-
+-- ========================================
+-- Verify Data
+-- ========================================
+SELECT * FROM organization;
 SELECT * FROM category;
-
+SELECT * FROM service_project;
 SELECT * FROM project_category;
