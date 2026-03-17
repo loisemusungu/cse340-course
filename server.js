@@ -34,6 +34,7 @@ app.use((req, res, next) => {
   }
   next(); // Pass control to the next middleware or route
 });
+
 /**
   * Routes
   */
