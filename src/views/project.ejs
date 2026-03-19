@@ -3,24 +3,18 @@
 <main>
     <h1><%= title %></h1>
 
-    <% if (projects.length === 0) { %>
-        <p>No upcoming projects at the moment.</p>
-    <% } else { %>
-        <% projects.forEach(project => { %>
-            <div class="project-card">
-                <h2>
-                    <a href="/projects/<%= project.project_id %>"><%= project.title %></a>
-                </h2>
-                <p>
-                    <strong>Partner Organization:</strong>
-                    <a href="/organization/<%= project.organization_id %>">
-                        <%= project.organization_name %>
-                    </a>
-                </p>
-                <hr>
-            </div>
-        <% }) %>
-    <% } %>
+    <h2><%= project.title %></h2>
+    <p><strong>Description:</strong> <%= project.description %></p>
+    <p><strong>Date:</strong> <%= new Date(project.start_date).toDateString() %></p>
+    <p><strong>Location:</strong> <%= project.location %></p>
+    <p>
+        <strong>Partner Organization:</strong>
+        <a href="/organization/<%= project.organization_id %>">
+            <%= project.organization_name %>
+        </a>
+    </p>
+
+    <p><a href="/projects">Back to Upcoming Projects</a></p>
 </main>
 
 <%- include('partials/footer') %>
