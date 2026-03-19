@@ -11,9 +11,12 @@
                 <h2>
                     <a href="/projects/<%= project.project_id %>"><%= project.title %></a>
                 </h2>
-                <p><strong>Description:</strong> <%= project.description %></p>
-                <p><strong>Date:</strong> <%= new Date(project.start_date).toDateString() %></p>
-                <p><strong>Location:</strong> <%= project.location %></p>
+                <p>
+                    <strong>Partner Organization:</strong>
+                    <a href="/organization/<%= project.organization_id %>">
+                        <%= project.organization_name %>
+                    </a>
+                </p>
                 <hr>
             </div>
         <% }) %>
