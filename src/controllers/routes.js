@@ -22,6 +22,7 @@ router.get('/projects', showProjectsPage);
 
 // ⭐ New project details route
 router.get('/projects/:id', showProjectDetailsPage);
+router.get('/project/:id', showProjectDetailsPage);
 
 // Categories
 router.get('/categories', showCategoriesPage);
