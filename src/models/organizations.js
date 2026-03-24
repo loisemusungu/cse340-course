@@ -31,4 +31,8 @@ const getOrganizationDetails = async (organizationId) => {
 };
 
 // Export the model functions
-export { getAllOrganizations, getOrganizationDetails };
+export { 
+  getAllOrganizations, 
+  getOrganizationDetails,
+  createOrganization 
+};
