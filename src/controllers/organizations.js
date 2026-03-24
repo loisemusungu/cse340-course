@@ -27,4 +27,4 @@ const showOrganizationDetailsPage = async (req, res) => {
 };
 
 // Export any controller functions
-export { showOrganizationsPage, showOrganizationDetailsPage };
+export { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm };
