@@ -1,4 +1,5 @@
 import db from './db.js'
+import {createOrganization} from './organization.js'
 
 const getAllOrganizations = async() => {
     const query = `
