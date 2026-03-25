@@ -38,4 +38,33 @@ const getCategoryDetails = async (categoryId) => {
   return category;
 };
 
-export { getAllCategories, getCategoryDetails };
+// Insert one category assignment into the join table
+async function assignCategoryToProject(projectId, categoryId) {
+  const query = `
+    INSERT INTO project_category (project_id, category_id)
+    VALUES ($1, $2);
+  `;
+  await db.query(query, [projectId, categoryId]);
+}
+
+// Update category assignments for a project
+const updateCategoryAssignments = async (projectId, categoryIds) => {
+  // Remove old assignments
+  await db.query(
+    `DELETE FROM project_category WHERE project_id = $1`,
+    [projectId]
+  );
+
+  // Add new assignments
+  if (Array.isArray(categoryIds)) {
+    for (const categoryId of categoryIds) {
+      await assignCategoryToProject(projectId, categoryId);
+    }
+  }
+};
+
+export {
+        getAllCategories, 
+        getCategoryDetails,
+        updateCategoryAssignments
+      };
