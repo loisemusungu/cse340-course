@@ -34,6 +34,14 @@ const showNewOrganizationForm = async (req, res) => {
     res.render('new-organization', { title });
 };
 
+const showEditOrganizationForm = async (req, res) => {
+    const organizationId = req.params.id;
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    const title = 'Edit Organization';
+    res.render('edit-organization', { title, organizationDetails });
+};
+
 // handle form submission for creating a new organization
 const processNewOrganizationForm = async (req, res) => {
     // Check for validation errors
@@ -78,5 +86,6 @@ export {
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
-    organizationValidation
+    organizationValidation,
+    showEditOrganizationForm
 };
