@@ -10,7 +10,12 @@ import {
     showEditOrganizationForm,
     processEditOrganizationForm 
     } from './organizations.js';
-import { showProjectsPage, showProjectDetailsPage } from './projects.js';
+import { 
+        showProjectsPage, 
+        showProjectDetailsPage,
+        showNewProjectForm,
+        processNewProjectForm 
+        } from './projects.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './categories.js';
 import { testErrorPage } from './errors.js';
 
@@ -47,6 +52,10 @@ router.get('/projects', showProjectsPage);
 // ⭐ New project details route
 router.get('/projects/:id', showProjectDetailsPage);
 router.get('/project/:id', showProjectDetailsPage);
+
+// New project routes
+router.get('/new-project', showNewProjectForm);
+router.post('/new-project', processNewProjectForm);
 
 // Categories
 router.get('/categories', showCategoriesPage);
