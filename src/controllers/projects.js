@@ -1,9 +1,9 @@
 // Import any needed model functions
-import {
+import { getAllOrganizations } from '../models/organizations.js';
+import { 
     getUpcomingProjects,
     getProjectDetails,
-    createProject,
-    getAllOrganizations
+    createProject 
 } from '../models/projects.js';
 
 // Number of upcoming projects to show
@@ -26,21 +26,20 @@ const showNewProjectForm = async (req, res) => {
 
 // Process new project form submission
 const processNewProjectForm = async (req, res) => {
-    // Extract form data from req.body
-    const { title, description, location, date, organizationId } = req.body;
-
     try {
-        // Create the new project in the database
-        const newProjectId = await createProject(title, description, location, date, organizationId);
-
-        req.flash('success', 'New service project created successfully!');
-        res.redirect(`/project/${newProjectId}`);
+      const { title, description, location, startDate, endDate, organizationId } = req.body;
+  
+      // Call your updated createProject function
+      const newProjectId = await createProject(title, description, location, startDate, endDate, organizationId);
+  
+      req.flash('success', 'New service project created successfully!');
+      res.redirect(`/project/${newProjectId}`);
     } catch (error) {
-        console.error('Error creating new project:', error);
-        req.flash('error', 'There was an error creating the service project.');
-        res.redirect('/new-project');
+      console.error('Error creating new project:', error);
+      req.flash('error', 'There was an error creating the service project.');
+      res.redirect('/new-project');
     }
-}
+  };
 
 // Controller for the project details page
 const showProjectDetailsPage = async (req, res) => {
