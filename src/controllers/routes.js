@@ -14,7 +14,8 @@ import {
         showProjectsPage, 
         showProjectDetailsPage,
         showNewProjectForm,
-        processNewProjectForm 
+        processNewProjectForm,
+        projectValidation 
         } from './projects.js';
 import { showCategoriesPage, showCategoryDetailsPage } from './categories.js';
 import { testErrorPage } from './errors.js';
@@ -55,7 +56,7 @@ router.get('/project/:id', showProjectDetailsPage);
 
 // New project routes
 router.get('/new-project', showNewProjectForm);
-router.post('/new-project', processNewProjectForm);
+router.post('/new-project', projectValidation, processNewProjectForm);
 
 // Categories
 router.get('/categories', showCategoriesPage);
