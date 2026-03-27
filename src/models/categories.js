@@ -38,6 +38,29 @@ const getCategoryDetails = async (categoryId) => {
   return category;
 };
 
+// Create a new category
+const createCategory = async (name) => {
+  const query = `
+    INSERT INTO category (name)
+    VALUES ($1)
+    RETURNING *;
+  `;
+  const result = await db.query(query, [name]);
+  return result.rows[0];
+};
+
+// Update an existing category
+const updateCategory = async (id, name) => {
+  const query = `
+    UPDATE category
+    SET name = $1
+    WHERE category_id = $2
+    RETURNING *;
+  `;
+  const result = await db.query(query, [name, id]);
+  return result.rows[0];
+};
+
 // Insert one category assignment into the join table
 async function assignCategoryToProject(projectId, categoryId) {
   const query = `
@@ -49,13 +72,8 @@ async function assignCategoryToProject(projectId, categoryId) {
 
 // Update category assignments for a project
 const updateCategoryAssignments = async (projectId, categoryIds) => {
-  // Remove old assignments
-  await db.query(
-    `DELETE FROM project_category WHERE project_id = $1`,
-    [projectId]
-  );
+  await db.query(`DELETE FROM project_category WHERE project_id = $1`, [projectId]);
 
-  // Add new assignments
   if (Array.isArray(categoryIds)) {
     for (const categoryId of categoryIds) {
       await assignCategoryToProject(projectId, categoryId);
@@ -76,8 +94,10 @@ const getCategoriesByServiceProjectId = async (projectId) => {
 };
 
 export {
-        getAllCategories, 
-        getCategoryDetails,
-        updateCategoryAssignments,
-        getCategoriesByServiceProjectId
-      };
+  getAllCategories,
+  getCategoryDetails,
+  updateCategoryAssignments,
+  getCategoriesByServiceProjectId,
+  createCategory,
+  updateCategory
+};
