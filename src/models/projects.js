@@ -100,7 +100,7 @@ const createProject = async (title, description, location, startDate, endDate, o
 };
 
 // update project details (admin only)
-const updateProject = async (projectId, title, description, startDate, endDate, location, organizationId) => {
+const updateProject = async (projectId, title, description, start_date, end_date, location, organizationId) => {
   const query = `
     UPDATE service_project
     SET title = $1,
@@ -116,8 +116,8 @@ const updateProject = async (projectId, title, description, startDate, endDate, 
   const result = await db.query(query, [
     title,
     description,
-    startDate,
-    endDate,
+    start_date,
+    end_date,
     location,
     organizationId,
     projectId

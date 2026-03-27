@@ -16,7 +16,9 @@ import {
         showProjectDetailsPage,
         showNewProjectForm,
         processNewProjectForm,
-        projectValidation 
+        projectValidation,
+        showEditProjectForm,
+        processEditProjectForm 
         } from './projects.js';
 
 import { 
@@ -25,6 +27,7 @@ import {
         showAssignCategoriesForm, 
         processAssignCategoriesForm
         } from './categories.js';
+
 import { testErrorPage } from './errors.js';
 
 
@@ -64,6 +67,10 @@ router.get('/project/:id', showProjectDetailsPage);
 // New project routes
 router.get('/new-project', showNewProjectForm);
 router.post('/new-project', projectValidation, processNewProjectForm);
+
+// Ability to edit service projects
+router.get('/edit-project/:id', showEditProjectForm);
+router.post('/edit-project/:id', processEditProjectForm);
 
 // Categories
 router.get('/categories', showCategoriesPage);

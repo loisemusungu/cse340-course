@@ -3,7 +3,8 @@ import { getAllOrganizations } from '../models/organizations.js';
 import { 
     getUpcomingProjects,
     getProjectDetails,
-    createProject 
+    createProject,
+    updateProject 
 } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
