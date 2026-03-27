@@ -98,8 +98,9 @@ const processNewCategoryForm = async (req, res) => {
 const showEditCategoryForm = async (req, res) => {
   const categoryId = req.params.id;
   const category = await getCategoryDetails(categoryId);
+  const allCategories = await getAllCategories(); // fetch all categories
   const title = 'Edit Category';
-  res.render('edit-category', { title, category });
+  res.render('edit-category', { title, category, allCategories });
 };
 
 // Handle edit category form submission
@@ -112,10 +113,12 @@ const processEditCategoryForm = async (req, res) => {
     return res.redirect(`/edit-category/${categoryId}`);
   }
 
-  const { name } = req.body;
+  const { name } = req.body; // Make sure this matches your form input "name"
 
   try {
-    await updateCategory(categoryId, name);
+    const updated = await updateCategory(categoryId, name);
+    if (!updated) throw new Error('Category not found or update failed');
+
     req.flash('success', 'Category updated successfully!');
     res.redirect(`/category/${categoryId}`);
   } catch (error) {

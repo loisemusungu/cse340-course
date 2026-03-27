@@ -58,7 +58,7 @@ const updateCategory = async (id, name) => {
     RETURNING *;
   `;
   const result = await db.query(query, [name, id]);
-  return result.rows[0];
+  return result.rows[0]; // Make sure it returns the updated row
 };
 
 // Insert one category assignment into the join table
