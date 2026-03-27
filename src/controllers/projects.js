@@ -87,11 +87,46 @@ const showProjectDetailsPage = async (req, res) => {
     res.render('project', { title, project });
 };
 
+// show edit project form
+const showEditProjectForm = async (req, res) => {
+  const projectId = req.params.id;
+
+  const project = await getProjectDetails(projectId);
+  const organizations = await getAllOrganizations();
+
+  const title = 'Edit Service Project';
+
+  res.render('update-project', { title, project, organizations });
+};
+
+// process form submission for editing project
+
+const processEditProjectForm = async (req, res) => {
+  const projectId = req.params.id;
+
+  const { title, description, start_date, end_date, location, organization_id } = req.body;
+
+  await updateProject(
+    projectId,
+    title,
+    description,
+    start_date,
+    end_date,
+    location,
+    organization_id
+  );
+
+  req.flash('success', 'Project updated successfully.');
+  res.redirect(`/project/${projectId}`);
+};
+
 // Export controllers
 export { 
         showProjectsPage, 
         showProjectDetailsPage, 
         showNewProjectForm,
         processNewProjectForm,
-        projectValidation
+        projectValidation,
+        showEditProjectForm,
+        processEditProjectForm
     };
