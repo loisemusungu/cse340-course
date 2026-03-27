@@ -99,11 +99,39 @@ const createProject = async (title, description, location, startDate, endDate, o
   return result.rows[0].project_id;
 };
 
+// update project details (admin only)
+const updateProject = async (projectId, title, description, startDate, endDate, location, organizationId) => {
+  const query = `
+    UPDATE service_project
+    SET title = $1,
+        description = $2,
+        start_date = $3,
+        end_date = $4,
+        location = $5,
+        organization_id = $6
+    WHERE project_id = $7
+    RETURNING *;
+  `;
+
+  const result = await db.query(query, [
+    title,
+    description,
+    startDate,
+    endDate,
+    location,
+    organizationId,
+    projectId
+  ]);
+
+  return result.rows[0];
+};
+
 // Export the model functions
 export {
   getAllProjects,
   getProjectsByOrganizationId,
   getUpcomingProjects,
   getProjectDetails,
-  createProject
+  createProject,
+  updateProject
 };
