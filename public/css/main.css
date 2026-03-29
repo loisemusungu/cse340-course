@@ -122,6 +122,24 @@ footer {
     }
 }
 
+/* form styles */
+.form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: inline-block;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Select all labels */
+label {
+    font-weight: bold;       /* make text bold */
+    display: block;          /* put each label on its own line */
+    margin-bottom: 5px;      /* spacing below label */
+    font-size: 16px;         /* optional size */
+  }
+
 /* Flash message styles */
 .alert {
     padding: 15px;
