@@ -25,7 +25,7 @@
     <div class="form-group">
       <label>End Date</label>
       <input type="date" name="end_date" 
-             value="<%= project.end_date ? project.end_date.toISOString().split('T')[0] : '' %>" 
+             value="<%= project.start_date ? project.start_date.toISOString().split('T')[0] : '' %>" 
              required>
     </div>
   
