@@ -126,6 +126,27 @@ const updateProject = async (projectId, title, description, start_date, end_date
   return result.rows[0];
 };
 
+// Get all categories
+const getAllCategories = async () => {
+  const query = `SELECT category_id, name FROM category ORDER BY name;`;
+  const result = await db.query(query);
+  return result.rows;
+};
+
+// Get categories assigned to a specific project
+const getCategoriesByServiceProjectId = async (projectId) => {
+  const query = `
+    SELECT c.category_id, c.name
+    FROM category c
+    JOIN project_category pc ON c.category_id = pc.category_id
+    WHERE pc.project_id = $1;
+  `;
+  const result = await db.query(query, [projectId]);
+  return result.rows;
+};
+
+
+
 // Export the model functions
 export {
   getAllProjects,
@@ -133,5 +154,7 @@ export {
   getUpcomingProjects,
   getProjectDetails,
   createProject,
-  updateProject
+  updateProject,
+  getAllCategories,
+  getCategoriesByServiceProjectId
 };

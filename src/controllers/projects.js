@@ -6,6 +6,13 @@ import {
     createProject,
     updateProject 
 } from '../models/projects.js';
+
+import { 
+  getAllCategories,
+  getCategoriesByServiceProjectId,
+  updateCategoryAssignments as updateProjectCategories
+} from '../models/categories.js';
+
 import { body, validationResult } from 'express-validator';
 
 const projectValidation = [
@@ -127,6 +134,37 @@ const processEditProjectForm = async (req, res) => {
   res.redirect(`/project/${projectId}`);
 };
 
+// show aassign categories
+
+const showAssignCategoriesForm = async (req, res) => {
+  const projectId = req.params.id; // URL parameter
+
+  const projectDetails = await getProjectDetails(projectId);
+  const categories = await getAllCategories();
+  const assignedCategories = await getCategoriesByServiceProjectId(projectId);
+
+  res.render('assign-categories', { projectDetails, categories, assignedCategories, projectId });
+};
+
+//process assign categories
+const assignCategoriesToProject = async (req, res) => {
+  const projectId = req.params.id;
+  const { categoryIds } = req.body;
+
+  // Ensure it's always an array
+  const selectedCategories = categoryIds ? (Array.isArray(categoryIds) ? categoryIds : [categoryIds]) : [];
+
+  try {
+    await updateProjectCategories(projectId, selectedCategories);
+    req.flash('success', 'Categories updated successfully!');
+    res.redirect(`/project/${projectId}`);
+  } catch (error) {
+    console.error('Error updating categories:', error);
+    req.flash('error', 'Failed to update categories.');
+    res.redirect(`/assign-categories/${projectId}`);
+  }
+};
+
 // Export controllers
 export { 
         showProjectsPage, 
@@ -135,5 +173,7 @@ export {
         processNewProjectForm,
         projectValidation,
         showEditProjectForm,
-        processEditProjectForm
+        processEditProjectForm,
+        showAssignCategoriesForm,
+        assignCategoriesToProject
     };

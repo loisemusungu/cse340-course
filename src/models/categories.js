@@ -58,17 +58,17 @@ const updateCategory = async (id, name) => {
     RETURNING *;
   `;
   const result = await db.query(query, [name, id]);
-  return result.rows[0]; // Make sure it returns the updated row
+  return result.rows[0];
 };
 
 // Insert one category assignment into the join table
-async function assignCategoryToProject(projectId, categoryId) {
+const assignCategoryToProject = async (projectId, categoryId) => {
   const query = `
     INSERT INTO project_category (project_id, category_id)
     VALUES ($1, $2);
   `;
   await db.query(query, [projectId, categoryId]);
-}
+};
 
 // Update category assignments for a project
 const updateCategoryAssignments = async (projectId, categoryIds) => {
@@ -96,8 +96,9 @@ const getCategoriesByServiceProjectId = async (projectId) => {
 export {
   getAllCategories,
   getCategoryDetails,
-  updateCategoryAssignments,
-  getCategoriesByServiceProjectId,
   createCategory,
-  updateCategory
+  updateCategory,
+  assignCategoryToProject,
+  updateCategoryAssignments,
+  getCategoriesByServiceProjectId
 };

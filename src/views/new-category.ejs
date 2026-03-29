@@ -4,6 +4,7 @@
   <h1>Add New Category</h1>
 
   <form action="/new-category" method="POST">
+    <!-- Category Name -->
     <label for="name">Category Name</label>
     <input 
       type="text" 
@@ -13,6 +14,27 @@
       required 
       maxlength="100"
     >
+
+    <!-- Assign to Projects -->
+    <% if (projects && projects.length > 0) { %>
+      <fieldset>
+        <legend>Assign to Projects</legend>
+        <% projects.forEach(project => { %>
+          <div>
+            <input 
+              type="checkbox" 
+              id="project-<%= project.project_id %>" 
+              name="projectIds" 
+              value="<%= project.project_id %>"
+            >
+            <label for="project-<%= project.project_id %>"><%= project.title %></label>
+          </div>
+        <% }); %>
+      </fieldset>
+    <% } else { %>
+      <p>No projects available to assign yet.</p>
+    <% } %>
+
     <button type="submit">Create Category</button>
   </form>
 </main>

@@ -93,6 +93,10 @@ router.post('/new-category', categoryValidation, processNewCategoryForm);
 router.get('/edit-category/:id', showEditCategoryForm);
 router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 
+// Assign Category
+router.get('/assign-categories/:id', showAssignCategoriesForm);
+router.post('/assign-categories/:id', processAssignCategoriesForm);
+
 // Error test route
 router.get('/test-error', testErrorPage);
 

@@ -7,7 +7,7 @@ import {
         updateCategory 
       } from '../models/categories.js';
 
-import { getProjectDetails } from '../models/projects.js';
+import { getAllProjects, getProjectDetails } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
 // Validation for creating/editing categories
@@ -68,12 +68,15 @@ const processAssignCategoriesForm = async (req, res) => {
 };
 
 // Show form to create a new category
-const showNewCategoryForm = (req, res) => {
+const showNewCategoryForm = async (req, res) => {
   const title = 'Add New Category';
-  res.render('new-category', { title });
+  const projects = await getAllProjects(); // fetch all existing projects
+
+  res.render('new-category', { title, projects });
 };
 
 // Handle new category form submission
+
 const processNewCategoryForm = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -81,19 +84,30 @@ const processNewCategoryForm = async (req, res) => {
     return res.redirect('/new-category');
   }
 
-  const { name } = req.body;
+  const { name, projectIds } = req.body;
+  const projectIdsArray = projectIds
+    ? Array.isArray(projectIds) 
+      ? projectIds 
+      : [projectIds] 
+    : [];
 
   try {
+    // Create category
     const newCategory = await createCategory(name);
+
+    // Assign to selected projects
+    if (projectIdsArray.length > 0) {
+      await assignCategoryToProjects(newCategory.category_id, projectIdsArray);
+    }
+
     req.flash('success', 'New category created successfully!');
     res.redirect(`/category/${newCategory.category_id}`);
   } catch (error) {
-    console.error('Error creating category:', error);
+    console.error('Error creating category:', error); // This will print the real reason
     req.flash('error', 'Failed to create category.');
     res.redirect('/new-category');
   }
 };
-
 // Show form to edit an existing category
 const showEditCategoryForm = async (req, res) => {
   const categoryId = req.params.id;
