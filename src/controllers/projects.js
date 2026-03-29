@@ -21,10 +21,16 @@ const projectValidation = [
       .trim()
       .notEmpty().withMessage('Location is required')
       .isLength({ max: 200 }).withMessage('Location must be less than 200 characters'),
-  body('date')
-      .notEmpty().withMessage('Date is required')
-      .isISO8601().withMessage('Date must be a valid date format'),
-  body('organizationId')
+  
+  body('start_date')
+      .notEmpty().withMessage('Start date is required')
+      .isISO8601().withMessage('Start date must be a valid date'),
+    
+  body('end_date')
+      .notEmpty().withMessage('End date is required')
+      .isISO8601().withMessage('End date must be a valid date'),
+  
+    body('organizationId')
       .notEmpty().withMessage('Organization is required')
       .isInt().withMessage('Organization must be a valid integer')
 ];
@@ -59,14 +65,14 @@ const processNewProjectForm = async (req, res) => {
   }
 
   try {
-    const { title, description, location, startDate, endDate, organizationId } = req.body;
+    const { title, description, location, start_date, end_date, organizationId } = req.body;
 
     const newProjectId = await createProject(
       title,
       description,
       location,
-      startDate,
-      endDate,
+      start_date,
+      end_date,
       organizationId
     );
 
