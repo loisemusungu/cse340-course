@@ -93,6 +93,17 @@ const getCategoriesByServiceProjectId = async (projectId) => {
   return result.rows;
 };
 
+async function assignCategoryToProjects(categoryId, projectIds) {
+  const query = `
+    INSERT INTO project_category (project_id, category_id)
+    VALUES ($1, $2)
+  `;
+
+  for (const projectId of projectIds) {
+    await db.query(query, [projectId, categoryId]);
+  }
+}
+
 export {
   getAllCategories,
   getCategoryDetails,
@@ -100,5 +111,6 @@ export {
   updateCategory,
   assignCategoryToProject,
   updateCategoryAssignments,
-  getCategoriesByServiceProjectId
+  getCategoriesByServiceProjectId,
+  assignCategoryToProjects
 };

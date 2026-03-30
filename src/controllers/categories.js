@@ -77,37 +77,21 @@ const showNewCategoryForm = async (req, res) => {
 
 // Handle new category form submission
 
-const processNewCategoryForm = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    errors.array().forEach(error => req.flash('error', error.msg));
-    return res.redirect('/new-category');
-  }
-
-  const { name, projectIds } = req.body;
-  const projectIdsArray = projectIds
-    ? Array.isArray(projectIds) 
-      ? projectIds 
-      : [projectIds] 
-    : [];
-
+async function processNewCategoryForm(req, res) {
   try {
-    // Create category
-    const newCategory = await createCategory(name);
+    const { name } = req.body
 
-    // Assign to selected projects
-    if (projectIdsArray.length > 0) {
-      await assignCategoryToProjects(newCategory.category_id, projectIdsArray);
-    }
+    await createCategory(name)
 
-    req.flash('success', 'New category created successfully!');
-    res.redirect(`/category/${newCategory.category_id}`);
+    req.flash("success", "Category created")
+    res.redirect("/categories")
   } catch (error) {
-    console.error('Error creating category:', error); // This will print the real reason
-    req.flash('error', 'Failed to create category.');
-    res.redirect('/new-category');
+    console.error("Error creating category:", error)
+    req.flash("error", "Failed to create category")
+    res.redirect("/new-category")
   }
 };
+
 // Show form to edit an existing category
 const showEditCategoryForm = async (req, res) => {
   const categoryId = req.params.id;
