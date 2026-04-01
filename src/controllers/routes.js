@@ -33,6 +33,11 @@ import {
         processEditCategoryForm
         } from './categories.js';
 
+import { 
+        showUserRegistrationForm, 
+        processUserRegistrationForm 
+        } from './registration.js';
+
 import { testErrorPage } from './errors.js';
 
 
@@ -96,6 +101,10 @@ router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 // Assign Category
 router.get('/assign-categories/:id', showAssignCategoriesForm);
 router.post('/assign-categories/:id', processAssignCategoriesForm);
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
 
 // Error test route
 router.get('/test-error', testErrorPage);
