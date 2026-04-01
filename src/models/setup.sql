@@ -105,3 +105,5 @@ JOIN roles r ON u.role_id = r.role_id;
 
 -- Delete the test user
 DELETE FROM users WHERE email = 'test@example.com';
+
+SELECT name, email, password_hash FROM users;
