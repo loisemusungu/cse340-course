@@ -57,7 +57,7 @@ router.post('/new-organization', organizationValidation, processNewOrganizationF
 router.get('/edit-organization/:id', showEditOrganizationForm);
 
 // Route to handle the edit organization form submission
-router.post('/edit-organization/:id', processEditOrganizationForm);
+// router.post('/edit-organization/:id', processEditOrganizationForm);
 
 // Route to handle the edit organization form submission
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
@@ -75,7 +75,7 @@ router.post('/new-project', projectValidation, processNewProjectForm);
 
 // Ability to edit service projects
 router.get('/edit-project/:id', showEditProjectForm);
-router.post('/edit-project/:id', processEditProjectForm);
+router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 
 // Categories
 router.get('/categories', showCategoriesPage);
