@@ -37,9 +37,9 @@ const projectValidation = [
       .notEmpty().withMessage('End date is required')
       .isISO8601().withMessage('End date must be a valid date'),
   
-    body('organizationId')
-      .notEmpty().withMessage('Organization is required')
-      .isInt().withMessage('Organization must be a valid integer')
+    // body('organizationId')
+      // .notEmpty().withMessage('Organization is required')
+      // .isInt().withMessage('Organization must be a valid integer')
 ];
 
 // Number of upcoming projects to show
@@ -117,6 +117,13 @@ const showEditProjectForm = async (req, res) => {
 
 const processEditProjectForm = async (req, res) => {
   const projectId = req.params.id;
+
+  const errors = validationResult(req);
+  
+  if (!errors.isEmpty()) {
+    errors.array().forEach(error => req.flash('error', error.msg));
+    return res.redirect(`/edit-project/${projectId}`);
+  }
 
   const { title, description, start_date, end_date, location, organization_id } = req.body;
 
