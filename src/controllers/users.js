@@ -86,6 +86,19 @@ const requireRole = (role) => {
     };
 };
 
+// Show the form to create a new organization (admin only)
+const newOrganizationPage = (req, res) => {
+    res.render('new-organization', { title: 'Create New Organization' });
+};
+
+// Handle form submission (already in your routes as processNewOrganizationForm)
+const processNewOrganizationForm = (req, res) => {
+    // Your logic to save the new organization to the database
+    // For now, just redirect with a success message
+    req.flash('success', 'Organization created successfully!');
+    res.redirect('/organizations');
+};
+
 const showDashboard = (req, res) => {
     const user = req.session.user;
     res.render('dashboard', { 
@@ -101,5 +114,7 @@ export {
         processLogout,
         requireLogin,
         showDashboard,
-        requireRole 
+        requireRole,
+        newOrganizationPage,
+        processNewOrganizationForm 
         };

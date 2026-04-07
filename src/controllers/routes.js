@@ -43,7 +43,9 @@ import {
         processLoginForm, 
         processLogout,
         requireLogin,
-        showDashboard 
+        showDashboard,
+        requireRole,
+        newOrganizationPage 
         } from './users.js';
 
 import { testErrorPage } from './errors.js';
@@ -61,10 +63,10 @@ router.get('/organizations', showOrganizationsPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
 
 // Route for new organization page
-router.get('/new-organization', showNewOrganizationForm);
+router.get('/new-organization', requireRole('admin')), newOrganizationPage;
 
 // Route to handle new organization form submission
-router.post('/new-organization', organizationValidation, processNewOrganizationForm);
+router.post('/new-organization', requireRole('admin'), organizationValidation, processNewOrganizationForm);
 
 // Route to display the edit organization form
 router.get('/edit-organization/:id', showEditOrganizationForm);
