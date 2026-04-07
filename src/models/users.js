@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import db from './db.js'
 
 const createUser = async (name, email, passwordHash) => {
