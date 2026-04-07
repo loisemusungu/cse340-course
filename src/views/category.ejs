@@ -20,7 +20,11 @@
 
   <p><a href="/categories">Back to Categories</a></p>
   <!-- Edit and Add buttons -->
-  <p><a href="/edit-category/<%= category.category_id %>">Edit Category</a></p>
+  <p>
+    <% if (user && user.role_name === 'admin') { %>
+      <a href="/edit-category/<%= category.category_id %>">Edit Category</a>
+  <% } %>
+    </p>
   
 </main>
 

@@ -1,20 +1,22 @@
 <%- include('partials/header') %>
 
 <main>
-  <h1>Edit Category</h1>
-
-  <form action="/edit-category/<%= category.category_id %>" method="POST">
-    <label for="name">Category Name</label>
-    <input 
-      type="text" 
-      id="name" 
-      name="name" 
-      value="<%= category.name %>" 
-      required 
-      maxlength="100"
-    >
-    <button type="submit">Update Category</button>
-  </form>
+  <% if (user && user.role_name === 'admin') { %>
+    <form action="/edit-category/<%= category.category_id %>" method="POST">
+      <label for="name">Category Name</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        value="<%= category.name %>" 
+        required 
+        maxlength="100"
+      >
+      <button type="submit">Update Category</button>
+    </form>
+  <% } else { %>
+    <p>You do not have permission to edit this category.</p>
+  <% } %>
 </main>
 
 <%- include('partials/footer') %>

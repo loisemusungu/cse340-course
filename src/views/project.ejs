@@ -15,12 +15,18 @@
     </p>
     <!-- Add Edit Categories link here -->
     <p>
-        <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
+        <% if (user && user.role_name === 'admin') { %>
+            <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
+        <% } %>
+        
     </p>
 
     <!-- Add Edit Project link here -->
     <p>
-        <a href="/edit-project/<%= project.project_id %>">Edit Project</a>
+        <% if (user && user.role_name === 'admin') { %>
+            <a href="/edit-project/<%= project.project_id %>">Edit Project</a>
+        <% } %>
+        
     </p>
 
     <p><a href="/projects">Back to Upcoming Projects</a></p>
