@@ -38,7 +38,13 @@ import {
         processUserRegistrationForm 
         } from './registration.js';
 
-import { showLoginForm, processLoginForm, processLogout } from './users.js';
+import { 
+        showLoginForm, 
+        processLoginForm, 
+        processLogout,
+        requireLogin,
+        showDashboard 
+        } from './users.js';
 
 import { testErrorPage } from './errors.js';
 
@@ -116,5 +122,8 @@ router.get('/logout', processLogout);
 
 // Error test route
 router.get('/test-error', testErrorPage);
+
+// Protected dashboard route
+router.get('/dashboard', requireLogin, showDashboard);
 
 export default router;

@@ -18,7 +18,7 @@ const processLoginForm = async (req, res) => {
 
             console.log('User logged in:', user);
 
-            return res.redirect('/');
+            return res.redirect('/dashboard');
         }
 
         req.flash('error', 'Invalid email or password.');
@@ -33,10 +33,23 @@ const processLoginForm = async (req, res) => {
 
 // Logout user
 const processLogout = (req, res) => {
-    req.session.destroy(() => {
+    if (req.session) {
+        // Set the flash message first
         req.flash('success', 'Logout successful!');
+
+        // Then destroy the session
+        req.session.destroy(err => {
+            if (err) {
+                console.error('Error destroying session:', err);
+                return res.redirect('/');
+            }
+
+            // Redirect after session is gone
+            res.redirect('/login');
+        });
+    } else {
         res.redirect('/login');
-    });
+    }
 };
 
 const requireLogin = (req, res, next) => {
@@ -47,9 +60,19 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
+const showDashboard = (req, res) => {
+    const user = req.session.user;
+    res.render('dashboard', { 
+        title: 'Dashboard',
+        name: user.name,
+        email: user.email
+    });
+};
+
 export { 
         showLoginForm, 
         processLoginForm, 
         processLogout,
-        requireLogin 
+        requireLogin,
+        showDashboard 
         };
