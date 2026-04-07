@@ -38,6 +38,8 @@ import {
         processUserRegistrationForm 
         } from './registration.js';
 
+import { showLoginForm, processLoginForm, processLogout } from './users.js';
+
 import { testErrorPage } from './errors.js';
 
 
@@ -105,6 +107,12 @@ router.post('/assign-categories/:id', processAssignCategoriesForm);
 // User registration routes
 router.get('/register', showUserRegistrationForm);
 router.post('/register', processUserRegistrationForm);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+
+router.get('/logout', processLogout);
 
 // Error test route
 router.get('/test-error', testErrorPage);
