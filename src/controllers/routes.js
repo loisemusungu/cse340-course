@@ -45,13 +45,21 @@ import {
         requireLogin,
         showDashboard,
         requireRole,
-        newOrganizationPage 
+        newOrganizationPage,
+        showUsersPage 
         } from './users.js';
 
 import { testErrorPage } from './errors.js';
 
 
 const router = express.Router();
+
+router.get(
+        "/users",
+        requireLogin,
+        requireRole("admin"),
+        showUsersPage
+    );
 
 // Home
 router.get('/', showHomePage);

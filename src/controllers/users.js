@@ -124,6 +124,21 @@ const showAllUsers = async (req, res) => {
     }
 };
 
+const showUsersPage = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+
+        res.render("users", {
+            title: "All Users",
+            users
+        });
+    } catch (error) {
+        console.log("Error loading users page", error);
+        req.flash("error", "Could not load users");
+        res.redirect("/dashboard");
+    }
+};
+
 export { 
         showLoginForm, 
         processLoginForm, 
@@ -133,5 +148,6 @@ export {
         requireRole,
         newOrganizationPage,
         processNewOrganizationForm,
-        showAllUsers, 
+        showAllUsers,
+        showUsersPage 
         };
