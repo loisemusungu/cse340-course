@@ -63,8 +63,7 @@ const getAllUsers = async () => {
     const sql = `
         SELECT 
             u.user_id,
-            u.first_name,
-            u.last_name,
+            u.name,
             u.email,
             r.role_name
         FROM users u
