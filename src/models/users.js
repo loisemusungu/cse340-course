@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import db from './db.js'
+import db from './db.js';
+import pool from "./db.js";
 
 const createUser = async (name, email, passwordHash) => {
     const default_role = 'user';
@@ -58,4 +59,31 @@ const authenticateUser = async (email, password) => {
     return userWithoutPassword;
 };
 
-export { createUser, findUserByEmail, authenticateUser };
+const getAllUsers = async () => {
+    const sql = `
+        SELECT 
+            u.user_id,
+            u.first_name,
+            u.last_name,
+            u.email,
+            r.role_name
+        FROM users u
+        JOIN roles r ON u.role_id = r.role_id
+        ORDER BY u.user_id;
+    `;
+
+    try {
+        const result = await pool.query(sql);
+        return result.rows;
+    } catch (error) {
+        console.log("Error getting all users", error);
+        throw error;
+    }
+};
+
+export { 
+        createUser, 
+        findUserByEmail, 
+        authenticateUser, 
+        getAllUsers 
+    };

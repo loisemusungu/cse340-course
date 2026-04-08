@@ -1,4 +1,5 @@
 import { authenticateUser } from '../models/users.js';
+import { getAllUsers } from "../models/users.js";
 
 // Show the login form
 const showLoginForm = (req, res) => {
@@ -108,6 +109,21 @@ const showDashboard = (req, res) => {
     });
 };
 
+const showAllUsers = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+        res.render("users", {
+            title: "All Users",
+            users,
+            user: req.session.user
+        });
+    } catch (error) {
+        console.log("Error loading users page", error);
+        req.flash("error", "Could not load users");
+        res.redirect("/dashboard");
+    }
+};
+
 export { 
         showLoginForm, 
         processLoginForm, 
@@ -116,5 +132,6 @@ export {
         showDashboard,
         requireRole,
         newOrganizationPage,
-        processNewOrganizationForm 
+        processNewOrganizationForm,
+        showAllUsers, 
         };
