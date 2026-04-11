@@ -1,12 +1,64 @@
 -- ========================================
--- Category Table
+-- DROP TABLES (SAFE RESET ORDER)
+-- ========================================
+DROP TABLE IF EXISTS project_category;
+DROP TABLE IF EXISTS service_project;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS organization;
+
+-- ========================================
+-- ROLES TABLE
+-- ========================================
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL UNIQUE,
+    role_description TEXT
+);
+
+INSERT INTO roles (role_name, role_description)
+VALUES 
+('user', 'Standard user with basic access'),
+('admin', 'Administrator with full system access');
+
+-- ========================================
+-- ORGANIZATION TABLE
+-- ========================================
+CREATE TABLE organization (
+    organization_id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    description TEXT
+);
+
+ALTER TABLE organization
+ADD COLUMN contact_email VARCHAR(150);
+
+ALTER TABLE organization
+ADD COLUMN logo_filename VARCHAR(255);
+
+-- IMPORTANT FIX: seed data BEFORE service_project
+INSERT INTO organization (name, description)
+VALUES 
+('Hope Foundation', 'Community support organization'),
+('Green Earth Initiative', 'Environmental projects'),
+('Youth Empowerment Hub', 'Youth development programs');
+
+-- ========================================
+-- CATEGORY TABLE
 -- ========================================
 CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL UNIQUE
 );
+
+INSERT INTO category (name) VALUES
+('Clean Up'),
+('Food Drive'),
+('Mentoring');
+
 -- ========================================
--- Service Project Table
+-- SERVICE PROJECT TABLE
 -- ========================================
 CREATE TABLE service_project (
     project_id SERIAL PRIMARY KEY,
@@ -26,6 +78,9 @@ VALUES
 (2, 'Urban Garden Build Day', 'Help expand the community garden and plant new crops.', '2025-06-02', '2025-06-02'),
 (3, 'Youth Mentoring Workshop', 'Mentor youth and guide them in leadership activities.', '2025-05-20', '2025-05-20');
 
+-- ========================================
+-- PROJECT CATEGORY TABLE
+-- ========================================
 CREATE TABLE project_category (
     project_id INT NOT NULL,
     category_id INT NOT NULL,
@@ -38,16 +93,14 @@ CREATE TABLE project_category (
         ON DELETE CASCADE
 );
 
-INSERT INTO category (name) VALUES
-('Clean Up'),
-('Food Drive'),
-('Mentoring');
-
 INSERT INTO project_category (project_id, category_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
 
+-- ========================================
+-- ADD LOCATION COLUMN (SAME DESIGN, JUST ORDERED SAFE)
+-- ========================================
 ALTER TABLE service_project
 ADD COLUMN location VARCHAR(200);
 
@@ -63,28 +116,9 @@ UPDATE service_project
 SET location = 'City Youth Center'
 WHERE project_id = 3;
 
-SELECT * FROM service_project;
-
-SELECT * FROM category;
-
-SELECT * FROM project_category;
-
--- Create roles table
-CREATE TABLE roles (
-    role_id SERIAL PRIMARY KEY,
-    role_name VARCHAR(50) NOT NULL UNIQUE,
-    role_description TEXT
-);
-
--- Insert initial roles
-INSERT INTO roles (role_name, role_description)
-VALUES 
-    ('user', 'Standard user with basic access'),
-    ('admin', 'Administrator with full system access');
-
--- Verify the inserted roles
-SELECT * FROM roles;
-
+-- ========================================
+-- USERS TABLE
+-- ========================================
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -94,12 +128,21 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert a test user
 INSERT INTO users (name, email, password_hash, role_id) 
 VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1);
 
--- Join users and roles to see complete information
-SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
+-- ========================================
+-- VERIFICATION QUERIES (OPTIONAL)
+-- ========================================
+SELECT * FROM organization;
+SELECT * FROM service_project;
+SELECT * FROM category;
+SELECT * FROM project_category;
+SELECT * FROM roles;
+SELECT * FROM users;
+
+-- JOIN TEST
+SELECT u.user_id, u.name, u.email, r.role_name
 FROM users u
 JOIN roles r ON u.role_id = r.role_id;
 
@@ -118,13 +161,3 @@ SELECT role_id, role_name FROM roles;
 UPDATE users
 SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
 WHERE user_id = 2;
-
--- View all users and roles
-SELECT * FROM users;
-SELECT * FROM roles;
-
--- Update a specific user to have admin role
-UPDATE users SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin') WHERE user_id = 2;
-
--- Verify the update by listing all users and their roles
-SELECT users.user_id, users.email, roles.role_name FROM users JOIN roles ON users.role_id = roles.role_id;
