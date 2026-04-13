@@ -161,3 +161,23 @@ SELECT role_id, role_name FROM roles;
 UPDATE users
 SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin')
 WHERE user_id = 2;
+
+-- create project volunteer table
+CREATE TABLE project_volunteers (
+    volunteer_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    project_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE (user_id, project_id),
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (project_id)
+        REFERENCES service_project(project_id)
+        ON DELETE CASCADE
+);
+
+SELECT * FROM project_volunteers;

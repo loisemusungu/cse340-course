@@ -29,6 +29,18 @@
         
     </p>
 
+    <!-- Volunteer -->
+    <p>
+        <% if (user) { %>
+            <% if (isVolunteer) { %>
+                <p>You are volunteering for this project.</p>
+                <a href="/project/<%= project.project_id %>/unvolunteer">Remove me</a>
+            <% } else { %>
+                <a href="/project/<%= project.project_id %>/volunteer">Volunteer</a>
+            <% } %>
+        <% } %>
+    </p>
+
     <p><a href="/projects">Back to Upcoming Projects</a></p>
 </main>
 

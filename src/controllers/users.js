@@ -1,5 +1,6 @@
 import { authenticateUser } from '../models/users.js';
 import { getAllUsers } from "../models/users.js";
+import { getUserVolunteerProjects } from '../models/volunteers.js';
 
 // Show the login form
 const showLoginForm = (req, res) => {
@@ -100,12 +101,17 @@ const processNewOrganizationForm = (req, res) => {
     res.redirect('/organizations');
 };
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
     const user = req.session.user;
-    res.render('dashboard', { 
+
+    const projects = await getUserVolunteerProjects(user.user_id);
+
+    res.render('dashboard', {
         title: 'Dashboard',
         name: user.name,
-        email: user.email
+        email: user.email,
+        user,
+        volunteerProjects: projects
     });
 };
 

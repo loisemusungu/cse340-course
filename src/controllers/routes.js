@@ -18,7 +18,9 @@ import {
         processNewProjectForm,
         projectValidation,
         showEditProjectForm,
-        processEditProjectForm 
+        processEditProjectForm,
+        volunteerForProject,
+        unvolunteerFromProject 
         } from './projects.js';
 
 import {
@@ -135,5 +137,10 @@ router.get('/test-error', testErrorPage);
 
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
+
+// Volunteers dashboard route
+router.get('/project/:id/volunteer', requireLogin, volunteerForProject);
+
+router.get('/project/:id/unvolunteer', requireLogin, unvolunteerFromProject);
 
 export default router;
